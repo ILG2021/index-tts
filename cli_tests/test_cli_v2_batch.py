@@ -60,6 +60,7 @@ def make_model_dir(base_dir):
         target = model_dir / dirname
         target.mkdir(parents=True, exist_ok=True)
         (target / "config.json").write_text("placeholder", encoding="utf-8")
+        (target / "model.safetensors").write_bytes(b"placeholder")
     return model_dir
 
 

@@ -50,6 +50,7 @@ def make_aux_model_cache(path):
         target = path / dirname
         target.mkdir(parents=True, exist_ok=True)
         (target / "config.json").write_text("placeholder", encoding="utf-8")
+        (target / "model.safetensors").write_bytes(b"placeholder")
 
 
 def user_state_paths(temp_path):

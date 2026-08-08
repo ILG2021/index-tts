@@ -95,6 +95,7 @@ def test_legacy_cache_compatibility(tmp_path, monkeypatch):
     w2v_dir = cache_dir / "w2v-bert-2.0"
     w2v_dir.mkdir()
     (w2v_dir / "config.json").write_text('{"test": true}')
+    (w2v_dir / "model.safetensors").write_bytes(b"fake_w2v")
 
     bigvgan_dir = cache_dir / "bigvgan"
     bigvgan_dir.mkdir()

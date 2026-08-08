@@ -15,6 +15,31 @@ logger = logging.getLogger(__name__)
 _BIGVGAN_REPO = "nvidia/bigvgan_v2_22khz_80band_256x"
 
 
+def _has_model_weights(model_dir: str) -> bool:
+    """Return whether a Hugging Face model directory contains weight files.
+
+    A partially completed ``snapshot_download`` commonly leaves only
+    ``config.json`` and tokenizer files behind.  Treating such a directory as
+    ready makes the later Transformers error opaque and, on Windows, is easy to
+    trigger when a download is interrupted.
+    """
+    if not os.path.isdir(model_dir):
+        return False
+    weight_names = (
+        "model.safetensors",
+        "pytorch_model.bin",
+        "model.safetensors.index.json",
+        "pytorch_model.bin.index.json",
+    )
+    if any(os.path.isfile(os.path.join(model_dir, name)) for name in weight_names):
+        return True
+    return any(
+        name.endswith((".safetensors", ".bin"))
+        and ("model-" in name or "pytorch_model-" in name)
+        for name in os.listdir(model_dir)
+    )
+
+
 def _download_single_file(repo_id: str, filename: str, local_path: str) -> str:
     """Download a single file from Hugging Face Hub to a specific local path."""
     local_dir = os.path.dirname(local_path)
@@ -116,14 +141,19 @@ def ensure_models_available(model_dir: str, bigvgan_repo: str = _BIGVGAN_REPO) -
 
     # w2v-bert-2.0 is a full repo needed by SeamlessM4T and Wav2Vec2BertModel.
     w2v_dir = os.path.join(cache_dir, "w2v-bert-2.0")
-    if not os.path.isdir(w2v_dir) or not os.listdir(w2v_dir):
+    if not _has_model_weights(w2v_dir):
         old_snapshot = _locate_snapshot("facebook/w2v-bert-2.0", cache_dir)
         if old_snapshot:
             print(f">> Migrating w2v-bert-2.0 from existing HF cache to {w2v_dir}...")
             shutil.copytree(old_snapshot, w2v_dir, dirs_exist_ok=True)
-        else:
+        if not _has_model_weights(w2v_dir):
             print(f">> Downloading w2v-bert-2.0 to {w2v_dir}...")
             snapshot_download("facebook/w2v-bert-2.0", local_dir=w2v_dir)
+    if not _has_model_weights(w2v_dir):
+        raise RuntimeError(
+            f"The w2v-bert-2.0 model is incomplete at {w2v_dir}. "
+            "Delete the incomplete directory and retry the download."
+        )
     paths["w2v_bert"] = w2v_dir
 
     for key, repo_id, remote_file, local_file, label in (

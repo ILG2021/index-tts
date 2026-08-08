@@ -66,6 +66,7 @@ def make_aux_model_cache(model_dir):
         target = model_dir / dirname
         target.mkdir(parents=True, exist_ok=True)
         (target / "config.json").write_text("placeholder", encoding="utf-8")
+        (target / "model.safetensors").write_bytes(b"placeholder")
 
 
 def assert_model_resource_help(test_case, stderr, model_dir):
