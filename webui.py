@@ -24,7 +24,12 @@ parser = argparse.ArgumentParser(
 parser.add_argument("--verbose", action="store_true", default=False, help="Enable verbose mode")
 parser.add_argument("--port", type=int, default=7860, help="Port to run the web UI on")
 parser.add_argument("--host", type=str, default="0.0.0.0", help="Host to run the web UI on")
-parser.add_argument("--model_dir", type=str, default="./checkpoints", help="Model checkpoints directory")
+parser.add_argument(
+    "--model_dir",
+    type=str,
+    default=os.path.join(current_dir, "checkpoints"),
+    help="Model checkpoints directory",
+)
 parser.add_argument("--fp16", action="store_true", default=False, help="Use FP16 for inference if available")
 parser.add_argument("--deepspeed", action="store_true", default=False, help="Use DeepSpeed to accelerate if available")
 parser.add_argument("--cuda_kernel", action="store_true", default=False, help="Use CUDA kernel for inference if available")
@@ -118,23 +123,25 @@ EMO_CHOICES_ALL = [i18n("与音色参考音频相同"),
                 i18n("使用情感描述文本控制")]
 EMO_CHOICES_OFFICIAL = EMO_CHOICES_ALL[:-1]  # skip experimental features
 
-os.makedirs("outputs/tasks",exist_ok=True)
-os.makedirs("prompts",exist_ok=True)
+examples_dir = os.path.join(current_dir, "examples")
+outputs_dir = os.path.join(current_dir, "outputs")
+os.makedirs(os.path.join(outputs_dir, "tasks"), exist_ok=True)
+os.makedirs(os.path.join(current_dir, "prompts"), exist_ok=True)
 
 MAX_LENGTH_TO_USE_SPEED = 70
 example_cases = []
-with open("examples/cases.jsonl", "r", encoding="utf-8") as f:
+with open(os.path.join(examples_dir, "cases.jsonl"), "r", encoding="utf-8") as f:
     for line in f:
         line = line.strip()
         if not line:
             continue
         example = json.loads(line)
         if example.get("emo_audio",None):
-            emo_audio_path = os.path.join("examples",example["emo_audio"])
+            emo_audio_path = os.path.join(examples_dir, example["emo_audio"])
         else:
             emo_audio_path = None
 
-        example_cases.append([os.path.join("examples", example.get("prompt_audio", "sample_prompt.wav")),
+        example_cases.append([os.path.join(examples_dir, example.get("prompt_audio", "sample_prompt.wav")),
                               EMO_CHOICES_ALL[example.get("emo_mode",0)],
                               example.get("text"),
                              emo_audio_path,
@@ -570,7 +577,7 @@ def gen_single(emo_control_method,prompt, text,
                 *args, progress=gr.Progress()):
     output_path = None
     if not output_path:
-        output_path = os.path.join("outputs", f"spk_{int(time.time())}.wav")
+        output_path = os.path.join(outputs_dir, f"spk_{int(time.time())}.wav")
     # set gradio progress
     tts.gr_progress = progress
     do_sample, top_p, top_k, temperature, \

@@ -190,7 +190,10 @@ indextts2 download --source huggingface --model-dir D:/models/IndexTTS-2
 `download --model-dir PATH` 下载成功并通过资源检查后, 默认会把 `PATH` 写入持久化配置的 `model_dir`, 后续 `check`, `synth` 和 `batch` 会默认使用该目录。临时下载或预热其他目录时使用 `--no-save`:
 
 ```bash
+indextts2 download --source huggingface --model-dir D:/tmp/IndexTTS-2 --no-save
 ```
+
+下载命令通过 Python API 下载资源，不依赖外部 `hf` 命令。目标目录已有文件时会增量补齐，不会清空目录。
 
 
 ## 环境检查
@@ -662,6 +665,7 @@ indextts2 batch --batch-file examples/batch/batch-concat.jsonl --voice examples/
 
 | 参数 | 必填 | 默认值 | 说明 |
 | --- | --- | --- | --- |
+| `--source huggingface` | 否 | `huggingface` | 模型下载源。 |
 | `--model-dir PATH` | 否 | 解析后的模型资源目录 | 下载目标目录。成功后默认写入持久化配置。 |
 | `--no-save` | 否 | `False` | 与 `--model-dir` 一起使用时, 禁止下载成功后写回 `model_dir`。 |
 
@@ -754,8 +758,8 @@ ERROR: provide exactly one text source: --text, --text-file or --stdin
 ERROR: model directory does not exist: <resolved-model-resource-directory>
 Model directory: <resolved-model-resource-directory>
 Missing resources: model directory does not exist
-Download with HuggingFace:
-  huggingface-cli download IndexTeam/IndexTTS-2 --local-dir "<resolved-model-resource-directory>"
+Download with Hugging Face:
+  hf download IndexTeam/IndexTTS-2 --local-dir "<resolved-model-resource-directory>"
 Persist a different model resource directory:
   indextts2 config set model_dir <resolved-model-resource-directory>
 Hint: rerun indextts2 download or choose a different model resource directory.
@@ -779,8 +783,8 @@ indextts2 config set model_dir <existing-model-resource-directory>
 ERROR: missing required model files: bpe.model, gpt.pth
 Model directory: <resolved-model-resource-directory>
 Missing resources: bpe.model, gpt.pth
-Download with HuggingFace:
-  huggingface-cli download IndexTeam/IndexTTS-2 --local-dir "<resolved-model-resource-directory>"
+Download with Hugging Face:
+  hf download IndexTeam/IndexTTS-2 --local-dir "<resolved-model-resource-directory>"
 Persist a different model resource directory:
   indextts2 config set model_dir <resolved-model-resource-directory>
 Hint: rerun indextts2 download or choose a different model resource directory.
@@ -871,10 +875,7 @@ ERROR: runtime unavailable for huggingface download source: No module named 'hug
 Install download support with: pip install huggingface_hub
 ```
 
-处理方式: 为当前环境安装提示中的 Python 包, 或改用另一个下载源:
-
-```bash
-```
+处理方式：为当前环境安装提示中的 Python 包，然后重新运行下载命令。
 
 ## 推荐工作流
 

@@ -37,9 +37,6 @@
   <a href='https://huggingface.co/IndexTeam/IndexTTS-2'>
     <img src='https://img.shields.io/badge/HuggingFace-Model-blue?logo=huggingface' />
   </a>
-  <br/>
-  </>
-  </a>
 </div>
 
 
@@ -66,8 +63,8 @@ Finally, experimental results on multiple datasets show that IndexTTS2 outperfor
 
 **IndexTTS2: The Future of Voice, Now Generating**
 
+![IndexTTS2 Demo](assets/IndexTTS2-video-pic.png)
 
-*Click the image to watch the IndexTTS2 introduction video.*
 
 </div>
 
@@ -116,7 +113,11 @@ The key contributions of **IndexTTS2** are summarized as follows:
 
 ## Model Download
 
-|----------------------------------------------------------|----------------------------------------------------------|
+| Hugging Face |
+| --- |
+| [IndexTTS-2](https://huggingface.co/IndexTeam/IndexTTS-2) |
+| [IndexTTS-1.5](https://huggingface.co/IndexTeam/IndexTTS-1.5) |
+| [IndexTTS](https://huggingface.co/IndexTeam/Index-TTS) |
 
 
 ## Usage Instructions
@@ -171,45 +172,30 @@ We use `uv` to manage the project's dependency environment. The following comman
 will *automatically* create a `.venv` project-directory and then installs the correct
 versions of Python and all required dependencies:
 
-```bash
-uv sync --all-extras
+```powershell
+uv sync --extra webui
 ```
 
-If the download is slow, please try a *local mirror*, for example any of these
-local mirrors in China (choose one mirror from the list below):
-
-```bash
-
-```
+On Windows, use Python 3.10 or 3.11. The command above installs the supported
+base runtime and WebUI without requiring DeepSpeed or FlashAttention.
 
 > [!TIP]
 > **Available Extra Features:**
 > 
-> - `--all-extras`: Automatically adds *every* extra feature listed below. You can
->   remove this flag if you want to customize your installation choices.
 > - `--extra webui`: Adds WebUI support (recommended).
-> - `--extra deepspeed`: Adds DeepSpeed support (may speed up inference on some
->   systems).
-> - `--extra accel`: Adds the GPT2 flash-attention acceleration engine. On Windows
->   you must provide a compatible prebuilt `flash-attn` wheel yourself (see the
->   **Windows Acceleration** note below).
+> - `--extra deepspeed`: Adds DeepSpeed on supported non-Windows systems.
+> - `--extra accel`: Adds the GPT2 FlashAttention engine on Linux.
 > - `--extra torch_compile`: Adds `triton` support so the s2mel flow model can be
->   compiled with `torch.compile`. Windows support requires the community
->   `triton-windows` package.
+>   compiled with `torch.compile`; Windows uses `triton-windows`.
 
 > [!IMPORTANT]
-> **Important (Windows):** The DeepSpeed library may be difficult to install for
-> some Windows users. You can skip it by removing the `--all-extras` flag. If you
-> want any of the other extra features above, you can manually add their specific
-> feature flags instead.
-> 
-> **Important (Linux/Windows):** If you see an error about CUDA during the installation,
-> please ensure that you have installed NVIDIA's [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit)
-> version **12.8** (or newer) on your system.
+> **Windows:** DeepSpeed and FlashAttention are not installed automatically.
+> Standard CPU/CUDA inference works without them. Install the NVIDIA CUDA Toolkit
+> and Visual Studio Build Tools only if you explicitly enable `--cuda_kernel`.
 
 5. Download the required models via [uv tool](https://docs.astral.sh/uv/guides/tools/#installing-tools):
 
-Download via `huggingface-cli`:
+Download with the Hugging Face CLI:
 
 ```bash
 uv tool install "huggingface-hub[cli,hf_xet]"
@@ -217,23 +203,21 @@ uv tool install "huggingface-hub[cli,hf_xet]"
 hf download IndexTeam/IndexTTS-2 --local-dir=checkpoints
 ```
 
-
-```bash
-
-```
-
 > [!IMPORTANT]
 > If the commands above aren't available, please carefully read the `uv tool`
 > output. It will tell you how to add the tools to your system's path.
 
 > [!NOTE]
-> In addition to the above models, some small models will also be automatically
-> downloaded when the project is run for the first time. If your network environment
-> has slow access to HuggingFace, it is recommended to execute the following
-> command before running the code:
-> 
-> ```bash
-> ```
+> Some auxiliary models are downloaded from Hugging Face on first use.
+
+#### Windows PowerShell quickstart
+
+```powershell
+py -3.10 -m pip install -U uv
+uv sync --extra webui
+uv run indextts2 download --model-dir checkpoints
+uv run webui.py --host 127.0.0.1
+```
 
 
 #### 🖥️ Checking PyTorch GPU Acceleration
@@ -273,10 +257,11 @@ chosen when the server starts and cannot be toggled from the WebUI:
   the `torch_compile` extra (i.e. `triton`) to be installed.
 - `--fp16`: Use half-precision inference (faster and lower VRAM usage).
 
-Example with all accelerations enabled:
+Example with Windows-supported optional compilation enabled:
 
 ```bash
-uv run webui.py --fp16 --accel --torch_compile
+uv sync --extra webui --extra torch_compile
+uv run webui.py --fp16 --torch_compile
 ```
 
 Have fun!
@@ -416,7 +401,9 @@ or visit the IndexTTS1 repository at <a href="https://github.com/index-tts/index
 
 ## Our Releases and Demos
 
+### IndexTTS2: [[Paper]](https://arxiv.org/abs/2506.21619); [[Demo]](https://index-tts.github.io/index-tts2.github.io/); [[HuggingFace]](https://huggingface.co/spaces/IndexTeam/IndexTTS-2-Demo)
 
+### IndexTTS1: [[Paper]](https://arxiv.org/abs/2502.05512); [[Demo]](https://index-tts.github.io/); [[HuggingFace]](https://huggingface.co/spaces/IndexTeam/IndexTTS)
 
 
 ## Acknowledgements

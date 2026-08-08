@@ -32,9 +32,6 @@
   <a href='https://huggingface.co/IndexTeam/IndexTTS-2'>
     <img src='https://img.shields.io/badge/HuggingFace-Model-blue?logo=huggingface' />
   </a>
-  <br/>
-  </>
-  </a>
 </div>
 
 ### 摘要
@@ -59,8 +56,8 @@
 
 **IndexTTS2：语音未来，现已生成**
 
+![IndexTTS2 Demo](../assets/IndexTTS2-video-pic.png)
 
-*点击图片观看IndexTTS2介绍视频*
 
 </div>
 
@@ -105,7 +102,11 @@ IndexTTS2架构总览：
 
 ## 模型下载
 
-|----------------------------------------------------------|----------------------------------------------------------|
+| Hugging Face |
+| --- |
+| [IndexTTS-2](https://huggingface.co/IndexTeam/IndexTTS-2) |
+| [IndexTTS-1.5](https://huggingface.co/IndexTeam/IndexTTS-1.5) |
+| [IndexTTS](https://huggingface.co/IndexTeam/Index-TTS) |
 
 ## 使用说明
 
@@ -147,27 +148,23 @@ git lfs pull  # 下载大文件
 
 使用uv安装依赖时，会创建虚拟环境，将所有依赖安装到`.venv`目录：
 
-```bash
-uv sync --all-extras
+```powershell
+uv sync --extra webui
 ```
 
-如中国大陆地区用户下载缓慢，可选用国内镜像：
-
-```bash
-
-```
+Windows 请使用 Python 3.10 或 3.11。上述命令不会要求安装 DeepSpeed 或 FlashAttention。
 
 > [!TIP]
 > **可选功能：**
 > 
-> - `--all-extras`：安装全部可选功能。可去除自定义。
 > - `--extra webui`：安装WebUI支持（推荐）。
-> - `--extra deepspeed`：安装DeepSpeed加速。
+> - `--extra deepspeed`：在非 Windows 系统安装 DeepSpeed。
+> - `--extra accel`：在 Linux 安装 FlashAttention 加速。
+> - `--extra torch_compile`：安装 `torch.compile` 支持；Windows 使用 `triton-windows`。
 
 > [!IMPORTANT]
-> **Windows注意：** DeepSpeed在部分Windows环境较难安装，可去除`--all-extras`。
-> 
-> **Linux/Windows注意：** 如遇CUDA相关报错，请确保已安装NVIDIA [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit) 12.8及以上。
+> **Windows 注意：** 标准 CPU/CUDA 推理不依赖 DeepSpeed 或 FlashAttention。只有显式启用
+> `--cuda_kernel` 时，才需要 NVIDIA CUDA Toolkit 和 Visual Studio Build Tools。
 
 5. 下载模型：
 
@@ -179,16 +176,17 @@ uv tool install "huggingface-hub[cli,hf_xet]"
 hf download IndexTeam/IndexTTS-2 --local-dir=checkpoints
 ```
 
-
-```bash
-
-```
-
 > [!NOTE]
-> 项目首次运行还会自动下载部分小模型。如网络访问HuggingFace较慢，建议提前设置：
-> 
-> ```bash
-> ```
+> 项目首次运行还会从 Hugging Face 自动下载部分辅助模型。
+
+#### Windows PowerShell 快速开始
+
+```powershell
+py -3.10 -m pip install -U uv
+uv sync --extra webui
+uv run indextts2 download --model-dir checkpoints
+uv run webui.py --host 127.0.0.1
+```
 
 #### 🖥️ PyTorch GPU 加速检测
 
@@ -315,7 +313,9 @@ tts.infer(voice, text, 'gen.wav')
 
 ## 演示
 
+### IndexTTS2: [[论文]](https://arxiv.org/abs/2506.21619); [[演示]](https://index-tts.github.io/index-tts2.github.io/); [[HuggingFace]](https://huggingface.co/spaces/IndexTeam/IndexTTS-2-Demo)
 
+### IndexTTS1: [[论文]](https://arxiv.org/abs/2502.05512); [[演示]](https://index-tts.github.io/); [[HuggingFace]](https://huggingface.co/spaces/IndexTeam/IndexTTS)
 
 ## 致谢
 

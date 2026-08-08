@@ -11,6 +11,7 @@
 
 ## 👉🏻 IndexTTS 👈🏻
 
+[[HuggingFace Demo]](https://huggingface.co/spaces/IndexTeam/IndexTTS) \
 [[Paper]](https://arxiv.org/abs/2502.05512)  [[Demos]](https://index-tts.github.io)  
 
 **IndexTTS** is a GPT-style text-to-speech (TTS) model mainly based on XTTS and Tortoise. It is capable of correcting the pronunciation of Chinese characters using pinyin and controlling pauses at any position through punctuation marks. We enhanced multiple modules of the system, including the improvement of speaker condition feature representation, and the integration of BigVGAN2 to optimize audio quality. Trained on tens of thousands of hours of data, our system achieves state-of-the-art performance, outperforming current popular TTS systems such as XTTS, CosyVoice2, Fish-Speech, and F5-TTS.
@@ -44,7 +45,10 @@ The main improvements and contributions are summarized as follows:
 
 
 ## Model Download
-|----------------------------------------------------------|----------------------------------------------------------|
+| Hugging Face |
+| --- |
+| [IndexTTS](https://huggingface.co/IndexTeam/Index-TTS) |
+| [IndexTTS-1.5](https://huggingface.co/IndexTeam/IndexTTS-1.5) |
 
 
 ## 📑 Evaluation
@@ -154,10 +158,6 @@ Download by `huggingface-cli`:
 huggingface-cli download IndexTeam/IndexTTS-1.5 \
   config.yaml bigvgan_discriminator.pth bigvgan_generator.pth bpe.model dvae.pth gpt.pth unigram_12000.vocab \
   --local-dir checkpoints
-```
-
-Recommended for China users. 如果下载速度慢，可以使用镜像：
-```bash
 ```
 
 Or by `wget`:

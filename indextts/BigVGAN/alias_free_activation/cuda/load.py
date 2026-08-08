@@ -64,9 +64,7 @@ def load():
             name=name,
             sources=sources,
             build_directory=buildpath,
-            extra_cflags=[
-                "-O3",
-            ],
+            extra_cflags=["/O2"] if os.name == "nt" else ["-O3"],
             extra_cuda_cflags=[
                 "-O3",
                 "-gencode",
@@ -101,8 +99,13 @@ def load():
 
 
 def _get_cuda_bare_metal_version(cuda_dir):
+    if not cuda_dir:
+        raise RuntimeError(
+            "CUDA Toolkit was not found. Install it and set CUDA_HOME before enabling the CUDA kernel."
+        )
+    nvcc = pathlib.Path(cuda_dir) / "bin" / ("nvcc.exe" if os.name == "nt" else "nvcc")
     raw_output = subprocess.check_output(
-        [cuda_dir + "/bin/nvcc", "-V"], universal_newlines=True
+        [str(nvcc), "-V"], universal_newlines=True
     )
     output = raw_output.split()
     release_idx = output.index("release") + 1
@@ -114,8 +117,4 @@ def _get_cuda_bare_metal_version(cuda_dir):
 
 
 def _create_build_dir(buildpath):
-    try:
-        os.mkdir(buildpath)
-    except OSError:
-        if not os.path.isdir(buildpath):
-            print(f"Creation of the build directory {buildpath} failed")
+    pathlib.Path(buildpath).mkdir(parents=True, exist_ok=True)

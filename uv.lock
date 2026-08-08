@@ -850,19 +850,18 @@ dependencies = [
 
 [package.optional-dependencies]
 accel = [
-    { name = "flash-attn" },
-    { name = "nvidia-cuda-runtime-cu12" },
-    { name = "nvidia-cudnn-cu12" },
-    { name = "triton-windows" },
+    { name = "flash-attn", marker = "sys_platform == 'linux'" },
+    { name = "nvidia-cuda-runtime-cu12", marker = "sys_platform == 'linux'" },
+    { name = "nvidia-cudnn-cu12", marker = "sys_platform == 'linux'" },
 ]
 deepspeed = [
-    { name = "deepspeed" },
+    { name = "deepspeed", marker = "sys_platform != 'win32'" },
 ]
 test = [
     { name = "pytest" },
 ]
 torch-compile = [
-    { name = "triton-windows" },
+    { name = "triton-windows", marker = "sys_platform == 'win32'" },
 ]
 webui = [
     { name = "gradio" },
@@ -873,11 +872,11 @@ requires-dist = [
     { name = "accelerate", specifier = "==1.8.1" },
     { name = "cn2an", specifier = "==0.5.22" },
     { name = "cython", specifier = "==3.0.7" },
-    { name = "deepspeed", marker = "extra == 'deepspeed'", specifier = "==0.17.1" },
+    { name = "deepspeed", marker = "sys_platform != 'win32' and extra == 'deepspeed'", specifier = "==0.17.1" },
     { name = "descript-audiotools", specifier = "==0.7.2" },
     { name = "einops", specifier = ">=0.8.1" },
     { name = "ffmpeg-python", specifier = "==0.2.0" },
-    { name = "flash-attn", marker = "extra == 'accel'", specifier = "==2.8.3.post1" },
+    { name = "flash-attn", marker = "sys_platform == 'linux' and extra == 'accel'", specifier = "==2.8.3.post1" },
     { name = "g2p-en", specifier = "==2.1.0" },
     { name = "gradio", marker = "extra == 'webui'", specifier = "==5.45.0" },
     { name = "jieba", specifier = "==0.42.1" },
@@ -888,8 +887,8 @@ requires-dist = [
     { name = "munch", specifier = "==4.0.0" },
     { name = "numba", specifier = "==0.63.0" },
     { name = "numpy", specifier = "==2.2.6" },
-    { name = "nvidia-cuda-runtime-cu12", marker = "extra == 'accel'" },
-    { name = "nvidia-cudnn-cu12", marker = "extra == 'accel'" },
+    { name = "nvidia-cuda-runtime-cu12", marker = "sys_platform == 'linux' and extra == 'accel'" },
+    { name = "nvidia-cudnn-cu12", marker = "sys_platform == 'linux' and extra == 'accel'" },
     { name = "omegaconf", specifier = ">=2.3.0" },
     { name = "opencv-python", specifier = "==4.9.0.80" },
     { name = "pandas", specifier = "==2.3.2" },
@@ -906,8 +905,7 @@ requires-dist = [
     { name = "torchaudio", marker = "sys_platform == 'linux' or sys_platform == 'win32'", specifier = "==2.8.*", index = "https://download.pytorch.org/whl/cu128" },
     { name = "tqdm", specifier = ">=4.67.1" },
     { name = "transformers", specifier = "==4.52.1" },
-    { name = "triton-windows", marker = "extra == 'accel'", specifier = "==3.1.0.post17" },
-    { name = "triton-windows", marker = "extra == 'torch-compile'", specifier = "==3.1.0.post17" },
+    { name = "triton-windows", marker = "sys_platform == 'win32' and extra == 'torch-compile'", specifier = "==3.1.0.post17" },
     { name = "wetext", marker = "sys_platform != 'linux'", specifier = ">=0.0.9" },
     { name = "wetextprocessing", marker = "sys_platform == 'linux'" },
 ]

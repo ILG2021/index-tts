@@ -1554,8 +1554,6 @@ def _report_missing_model_resources(model_dir):
 def _print_model_resource_help(model_dir, missing_summary):
     print(f"Model directory: {model_dir}", file=sys.stderr)
     print(f"Missing resources: {missing_summary}", file=sys.stderr)
-    print("Download with HuggingFace:", file=sys.stderr)
-    print(f'  huggingface-cli download {MODEL_REPO_ID} --local-dir "{model_dir}"', file=sys.stderr)
     print("Download with Hugging Face:", file=sys.stderr)
     print(f'  hf download {MODEL_REPO_ID} --local-dir "{model_dir}"', file=sys.stderr)
     print("Persist a different model resource directory:", file=sys.stderr)
