@@ -188,6 +188,13 @@ uv run indextts2 download --model-dir checkpoints
 uv run webui.py --host 127.0.0.1
 ```
 
+如果 WebUI 部署在反向代理的子路径下，可以使用 `--root-path` 指定 URL 前缀；
+同时兼容 `--root_path` 写法：
+
+```powershell
+uv run webui.py --host 127.0.0.1 --root-path /index-tts
+```
+
 #### 🖥️ PyTorch GPU 加速检测
 
 可运行脚本检测机器是否有GPU，以及是否安装了GPU版本的PyTorch。（如PyTorch版本不对，可能使用CPU启动，推理会非常慢）

@@ -219,6 +219,13 @@ uv run indextts2 download --model-dir checkpoints
 uv run webui.py --host 127.0.0.1
 ```
 
+When serving the WebUI behind a reverse proxy at a URL prefix, pass that prefix
+with `--root-path` (the underscore form `--root_path` is also accepted):
+
+```powershell
+uv run webui.py --host 127.0.0.1 --root-path /index-tts
+```
+
 
 #### 🖥️ Checking PyTorch GPU Acceleration
 

@@ -25,6 +25,13 @@ parser.add_argument("--verbose", action="store_true", default=False, help="Enabl
 parser.add_argument("--port", type=int, default=7860, help="Port to run the web UI on")
 parser.add_argument("--host", type=str, default="0.0.0.0", help="Host to run the web UI on")
 parser.add_argument(
+    "--root-path",
+    "--root_path",
+    dest="root_path",
+    default=None,
+    help="URL prefix used when serving behind a reverse proxy, e.g. /index-tts",
+)
+parser.add_argument(
     "--model_dir",
     type=str,
     default=os.path.join(current_dir, "checkpoints"),
@@ -1253,4 +1260,8 @@ with gr.Blocks(
 
 if __name__ == "__main__":
     demo.queue(20)
-    demo.launch(server_name=cmd_args.host, server_port=cmd_args.port)
+    demo.launch(
+        server_name=cmd_args.host,
+        server_port=cmd_args.port,
+        root_path=cmd_args.root_path,
+    )
