@@ -33,11 +33,7 @@
     <img src='https://img.shields.io/badge/HuggingFace-Model-blue?logo=huggingface' />
   </a>
   <br/>
-  <a href='https://modelscope.cn/studios/IndexTeam/IndexTTS-2-Demo'>
-    <img src='https://img.shields.io/badge/ModelScope-Demo-purple?logo=modelscope'/>
   </>
-  <a href='https://modelscope.cn/models/IndexTeam/IndexTTS-2'>
-    <img src='https://img.shields.io/badge/ModelScope-Model-purple?logo=modelscope'/>
   </a>
 </div>
 
@@ -63,7 +59,6 @@
 
 **IndexTTS2：语音未来，现已生成**
 
-[![IndexTTS2 Demo](../assets/IndexTTS2-video-pic.png)](https://www.bilibili.com/video/BV136a9zqEk5)
 
 *点击图片观看IndexTTS2介绍视频*
 
@@ -110,11 +105,7 @@ IndexTTS2架构总览：
 
 ## 模型下载
 
-| **HuggingFace**                                          | **ModelScope** |
 |----------------------------------------------------------|----------------------------------------------------------|
-| [😁 IndexTTS-2](https://huggingface.co/IndexTeam/IndexTTS-2) | [IndexTTS-2](https://modelscope.cn/models/IndexTeam/IndexTTS-2) |
-| [IndexTTS-1.5](https://huggingface.co/IndexTeam/IndexTTS-1.5) | [IndexTTS-1.5](https://modelscope.cn/models/IndexTeam/IndexTTS-1.5) |
-| [IndexTTS](https://huggingface.co/IndexTeam/Index-TTS) | [IndexTTS](https://modelscope.cn/models/IndexTeam/Index-TTS) |
 
 ## 使用说明
 
@@ -163,9 +154,7 @@ uv sync --all-extras
 如中国大陆地区用户下载缓慢，可选用国内镜像：
 
 ```bash
-uv sync --all-extras --default-index "https://mirrors.aliyun.com/pypi/simple"
 
-uv sync --all-extras --default-index "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple"
 ```
 
 > [!TIP]
@@ -190,19 +179,15 @@ uv tool install "huggingface-hub[cli,hf_xet]"
 hf download IndexTeam/IndexTTS-2 --local-dir=checkpoints
 ```
 
-ModelScope下载：
 
 ```bash
-uv tool install "modelscope"
 
-modelscope download --model IndexTeam/IndexTTS-2 --local_dir checkpoints
 ```
 
 > [!NOTE]
 > 项目首次运行还会自动下载部分小模型。如网络访问HuggingFace较慢，建议提前设置：
 > 
 > ```bash
-> export HF_ENDPOINT="https://hf-mirror.com"
 > ```
 
 #### 🖥️ PyTorch GPU 加速检测
@@ -330,9 +315,7 @@ tts.infer(voice, text, 'gen.wav')
 
 ## 演示
 
-### IndexTTS2: [[论文]](https://arxiv.org/abs/2506.21619); [[演示]](https://index-tts.github.io/index-tts2.github.io/); [[ModelScope]](https://modelscope.cn/studios/IndexTeam/IndexTTS-2-Demo); [[HuggingFace]](https://huggingface.co/spaces/IndexTeam/IndexTTS-2-Demo)
 
-### IndexTTS1: [[论文]](https://arxiv.org/abs/2502.05512); [[演示]](https://index-tts.github.io/); [[ModelScope]](https://modelscope.cn/studios/IndexTeam/IndexTTS-Demo); [[HuggingFace]](https://huggingface.co/spaces/IndexTeam/IndexTTS)
 
 ## 致谢
 

@@ -120,31 +120,6 @@ class DownloadCommandTests(unittest.TestCase):
         self.assertEqual(stderr, "")
         self.assertFalse(config_exists)
 
-    def test_download_from_modelscope_to_model_dir_persists_successful_target_directory(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            temp_path = Path(temp_dir).resolve()
-            state = user_state_paths(temp_path)
-            model_dir = temp_path / "custom-models"
-            calls = []
-
-            def fake_snapshot(model_id, local_dir, **kwargs):
-                calls.append((model_id, Path(local_dir)))
-                make_model_dir(Path(local_dir))
-                return str(local_dir)
-
-            with mock.patch.dict(os.environ, state["env"], clear=False):
-                with mock.patch("indextts.utils.model_download._snapshot_from_modelscope", side_effect=fake_snapshot):
-                    exit_code, stdout, stderr = self.run_cli(
-                        ["download", "--source", "modelscope", "--model-dir", str(model_dir)]
-                    )
-                config_text = state["config_path"].read_text(encoding="utf-8")
-
-        self.assertEqual(exit_code, 0)
-        self.assertEqual(calls, [("IndexTeam/IndexTTS-2", model_dir)])
-        self.assertIn(f"Downloaded model resources to: {model_dir}", stdout)
-        self.assertEqual(stderr, "")
-        self.assertIn(f'model_dir = "{model_dir.as_posix()}"', config_text)
-
     def test_download_from_huggingface_preserves_existing_files_in_model_dir(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             temp_path = Path(temp_dir).resolve()
@@ -155,13 +130,13 @@ class DownloadCommandTests(unittest.TestCase):
             model_dir.mkdir()
             sentinel.write_text("keep", encoding="utf-8")
 
-            def fake_snapshot_download(*, repo_id, local_dir):
+            def fake_snapshot_download(repo_id, local_dir):
                 target = Path(local_dir)
                 calls.append((repo_id, target, sentinel.exists()))
                 make_model_dir(target)
 
             with mock.patch.dict(os.environ, state["env"], clear=False):
-                with mock.patch("huggingface_hub.snapshot_download", side_effect=fake_snapshot_download):
+                with mock.patch("indextts.utils.model_download.snapshot_download", side_effect=fake_snapshot_download):
                     exit_code, stdout, stderr = self.run_cli(
                         ["download", "--source", "huggingface", "--model-dir", str(model_dir)]
                     )
@@ -209,26 +184,8 @@ class DownloadCommandTests(unittest.TestCase):
 
         self.assertEqual(exit_code, 3)
         self.assertEqual(stdout, "")
-        self.assertIn("ERROR: runtime unavailable for auto download source", stderr)
-        self.assertIn("pip install huggingface_hub modelscope", stderr)
-        self.assertFalse(config_exists)
-
-    def test_download_from_modelscope_returns_runtime_unavailable_when_source_package_is_missing(self):
-        with tempfile.TemporaryDirectory() as temp_dir:
-            state = user_state_paths(Path(temp_dir).resolve())
-
-            def raise_import(*args, **kwargs):
-                raise ImportError("No module named modelscope")
-
-            with mock.patch.dict(os.environ, state["env"], clear=False):
-                with mock.patch("indextts.utils.model_download._snapshot_from_modelscope", side_effect=raise_import):
-                    exit_code, stdout, stderr = self.run_cli(["download", "--source", "modelscope"])
-                config_exists = state["config_path"].exists()
-
-        self.assertEqual(exit_code, 3)
-        self.assertEqual(stdout, "")
-        self.assertIn("ERROR: runtime unavailable for modelscope download source", stderr)
-        self.assertIn("modelscope", stderr)
+        self.assertIn("ERROR: runtime unavailable for huggingface download source", stderr)
+        self.assertIn("pip install huggingface_hub", stderr)
         self.assertFalse(config_exists)
 
     def test_download_validates_downloaded_resources_before_persisting_model_dir(self):

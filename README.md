@@ -38,11 +38,7 @@
     <img src='https://img.shields.io/badge/HuggingFace-Model-blue?logo=huggingface' />
   </a>
   <br/>
-  <a href='https://modelscope.cn/studios/IndexTeam/IndexTTS-2-Demo'>
-    <img src='https://img.shields.io/badge/ModelScope-Demo-purple?logo=modelscope'/>
   </>
-  <a href='https://modelscope.cn/models/IndexTeam/IndexTTS-2'>
-    <img src='https://img.shields.io/badge/ModelScope-Model-purple?logo=modelscope'/>
   </a>
 </div>
 
@@ -70,7 +66,6 @@ Finally, experimental results on multiple datasets show that IndexTTS2 outperfor
 
 **IndexTTS2: The Future of Voice, Now Generating**
 
-[![IndexTTS2 Demo](assets/IndexTTS2-video-pic.png)](https://www.bilibili.com/video/BV136a9zqEk5)
 
 *Click the image to watch the IndexTTS2 introduction video.*
 
@@ -121,11 +116,7 @@ The key contributions of **IndexTTS2** are summarized as follows:
 
 ## Model Download
 
-| **HuggingFace**                                          | **ModelScope** |
 |----------------------------------------------------------|----------------------------------------------------------|
-| [😁 IndexTTS-2](https://huggingface.co/IndexTeam/IndexTTS-2) | [IndexTTS-2](https://modelscope.cn/models/IndexTeam/IndexTTS-2) |
-| [IndexTTS-1.5](https://huggingface.co/IndexTeam/IndexTTS-1.5) | [IndexTTS-1.5](https://modelscope.cn/models/IndexTeam/IndexTTS-1.5) |
-| [IndexTTS](https://huggingface.co/IndexTeam/Index-TTS) | [IndexTTS](https://modelscope.cn/models/IndexTeam/Index-TTS) |
 
 
 ## Usage Instructions
@@ -188,9 +179,7 @@ If the download is slow, please try a *local mirror*, for example any of these
 local mirrors in China (choose one mirror from the list below):
 
 ```bash
-uv sync --all-extras --default-index "https://mirrors.aliyun.com/pypi/simple"
 
-uv sync --all-extras --default-index "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple"
 ```
 
 > [!TIP]
@@ -228,12 +217,9 @@ uv tool install "huggingface-hub[cli,hf_xet]"
 hf download IndexTeam/IndexTTS-2 --local-dir=checkpoints
 ```
 
-Or download via `modelscope`:
 
 ```bash
-uv tool install "modelscope"
 
-modelscope download --model IndexTeam/IndexTTS-2 --local_dir checkpoints
 ```
 
 > [!IMPORTANT]
@@ -247,7 +233,6 @@ modelscope download --model IndexTeam/IndexTTS-2 --local_dir checkpoints
 > command before running the code:
 > 
 > ```bash
-> export HF_ENDPOINT="https://hf-mirror.com"
 > ```
 
 
@@ -431,9 +416,7 @@ or visit the IndexTTS1 repository at <a href="https://github.com/index-tts/index
 
 ## Our Releases and Demos
 
-### IndexTTS2: [[Paper]](https://arxiv.org/abs/2506.21619); [[Demo]](https://index-tts.github.io/index-tts2.github.io/); [[ModelScope]](https://modelscope.cn/studios/IndexTeam/IndexTTS-2-Demo); [[HuggingFace]](https://huggingface.co/spaces/IndexTeam/IndexTTS-2-Demo)
 
-### IndexTTS1: [[Paper]](https://arxiv.org/abs/2502.05512); [[Demo]](https://index-tts.github.io/); [[ModelScope]](https://modelscope.cn/studios/IndexTeam/IndexTTS-Demo); [[HuggingFace]](https://huggingface.co/spaces/IndexTeam/IndexTTS)
 
 
 ## Acknowledgements

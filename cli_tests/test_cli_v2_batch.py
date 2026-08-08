@@ -67,7 +67,7 @@ def assert_model_resource_help(test_case, stderr, model_dir):
     test_case.assertIn(f"Model directory: {model_dir}", stderr)
     test_case.assertIn("Missing resources:", stderr)
     test_case.assertIn("huggingface-cli download IndexTeam/IndexTTS-2", stderr)
-    test_case.assertIn("modelscope download --model IndexTeam/IndexTTS-2", stderr)
+    test_case.assertIn("hf download IndexTeam/IndexTTS-2", stderr)
     test_case.assertIn(f"indextts2 config set model_dir {model_dir}", stderr)
 
 

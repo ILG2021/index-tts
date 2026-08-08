@@ -128,9 +128,9 @@ def _build_parser():
     )
     download.add_argument(
         "--source",
-        choices=("huggingface", "modelscope", "auto"),
-        default="auto",
-        help="Model download source (default: auto-detect based on network)",
+        choices=("huggingface",),
+        default="huggingface",
+        help="Model download source (Hugging Face)",
     )
     download.add_argument(
         "--model-dir",
@@ -326,15 +326,8 @@ def _run_download(args):
 
 
 def _download_model_resources(source, model_dir):
-    if source == "auto":
-        from indextts.utils.model_download import snapshot_download
-        snapshot_download(MODEL_REPO_ID, local_dir=str(model_dir))
-    elif source == "modelscope":
-        from indextts.utils.model_download import _snapshot_from_modelscope
-        _snapshot_from_modelscope(MODEL_REPO_ID, str(model_dir))
-    else:
-        from huggingface_hub import snapshot_download
-        snapshot_download(repo_id=MODEL_REPO_ID, local_dir=str(model_dir))
+    from indextts.utils.model_download import snapshot_download
+    snapshot_download(MODEL_REPO_ID, local_dir=str(model_dir))
 
     if _missing_primary_model_resources(model_dir):
         return
@@ -345,11 +338,7 @@ def _download_model_resources(source, model_dir):
 
 
 def _download_support_package(source):
-    if source == "auto":
-        return "huggingface_hub modelscope"
-    if source == "huggingface":
-        return "huggingface_hub"
-    return "modelscope"
+    return "huggingface_hub"
 
 
 def _ensure_user_state(config=None):
@@ -1567,8 +1556,8 @@ def _print_model_resource_help(model_dir, missing_summary):
     print(f"Missing resources: {missing_summary}", file=sys.stderr)
     print("Download with HuggingFace:", file=sys.stderr)
     print(f'  huggingface-cli download {MODEL_REPO_ID} --local-dir "{model_dir}"', file=sys.stderr)
-    print("Download with ModelScope:", file=sys.stderr)
-    print(f'  modelscope download --model {MODEL_REPO_ID} --local_dir "{model_dir}"', file=sys.stderr)
+    print("Download with Hugging Face:", file=sys.stderr)
+    print(f'  hf download {MODEL_REPO_ID} --local-dir "{model_dir}"', file=sys.stderr)
     print("Persist a different model resource directory:", file=sys.stderr)
     print(f"  indextts2 config set model_dir {model_dir}", file=sys.stderr)
     print("Hint: rerun indextts2 download or choose a different model resource directory.", file=sys.stderr)
